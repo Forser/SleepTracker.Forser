@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace SleepTrackerAPI.Controllers
 {
@@ -14,14 +15,48 @@ namespace SleepTrackerAPI.Controllers
         }
 
         [HttpGet("GetSleepRecords")]
-        public async Task<IEnumerable<Sleep>> GetSleepRecords()
+        public IActionResult GetSleepRecords([FromQuery] SleepParameters sleepParameters)
         {
-            return await _sleepRepository.GetAllSleepAsync();
+            var sleepers = _sleepRepository.GetAll(sleepParameters);
+
+            var metadata = new
+            {
+                sleepers.TotalCount,
+                sleepers.PageSize,
+                sleepers.CurrentPage,
+                sleepers.TotalPages,
+                sleepers.HasNext,
+                sleepers.HasPrevious,
+                sleepers.SleepType
+            };
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
+
+            return Ok(sleepers);
         }
         [HttpGet("GetSleepRecord/{id:int}")]
         public async Task<Sleep> GetSleepById(int id)
         {
             return await _sleepRepository.GetSleepByIdAsync(id);
+        }
+        [HttpPost("PostSleepRecord/")]
+        public async Task<ActionResult<Sleep>> PostSleepRecord(Sleep sleep)
+        {
+            try
+            {
+                if (sleep == null)
+                {
+                    return BadRequest();
+                }
+
+                var sleepRecord = await _sleepRepository.CreateSleepAsync(sleep);
+
+                return CreatedAtAction("GetSleepRecords", new { id = sleepRecord.Id }, sleepRecord);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error saving new Sleep record");
+            }
         }
         [HttpPut("UpdateSleepRecord/{id:int}")]
         public async Task<ActionResult<Sleep>> UpdateSleepRecord(int id, Sleep sleep)

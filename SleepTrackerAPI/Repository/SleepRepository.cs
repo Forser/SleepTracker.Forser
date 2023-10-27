@@ -1,4 +1,6 @@
-﻿namespace SleepTrackerAPI.Repository
+﻿using SleepTrackerAPI.Repository.Helpers;
+
+namespace SleepTrackerAPI.Repository
 {
     public class SleepRepository : GenericRepository<Sleep>, ISleepRepository
     {
@@ -27,6 +29,17 @@
                 return true;
             }
             return false;
+        }
+
+        public PagedList<Sleep> GetAll(SleepParameters sleepParameters)
+        {
+            var sleepers = FindByCondition(o => o.TypeOfSleep >= sleepParameters.SleepType)
+                .OrderByDescending(o => o.EndOfSleep);
+
+            return PagedList<Sleep>.ToPagedList(sleepers,
+                sleepParameters.PageNumber, 
+                sleepParameters.PageSize,
+                sleepParameters.SleepType);
         }
 
         public async Task<List<Sleep>> GetAllSleepAsync()

@@ -2,5 +2,6 @@
 public enum SleepType
 {
     Sleep,
-    Nap
+    Nap,
+    PowerNap
 }

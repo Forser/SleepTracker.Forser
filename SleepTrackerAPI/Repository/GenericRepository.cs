@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SleepTrackerAPI.DataLayer;
+﻿using System.Linq.Expressions;
 
 namespace SleepTrackerAPI.Repository
 {
@@ -20,6 +19,18 @@ namespace SleepTrackerAPI.Repository
         {
             T exisiting = await _entities.FindAsync(id);
             _entities.Remove(exisiting);
+        }
+
+        public IQueryable<T> GetAll()
+        {
+            return _context.Set<T>().AsNoTracking();
+        }
+
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression) 
+        {
+            return _context.Set<T>()
+                .Where(expression)
+                .AsNoTracking();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync() => await _entities.ToListAsync();
