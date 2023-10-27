@@ -33,13 +33,47 @@ namespace SleepTrackerAPI.Repository
 
         public PagedList<Sleep> GetAll(SleepParameters sleepParameters)
         {
-            var sleepers = FindByCondition(o => o.TypeOfSleep >= sleepParameters.SleepType)
-                .OrderByDescending(o => o.EndOfSleep);
+            IQueryable<Sleep> sleepers = _context.Sleeps.AsQueryable();
+
+            if (sleepParameters.SleepType != null && sleepParameters.StartOfSleep != null && sleepParameters.EndOfSleep == null)
+            {
+                sleepers = FindByCondition(o => o.TypeOfSleep >= sleepParameters.SleepType 
+                    && o.StartOfSleep >= sleepParameters.StartOfSleep)
+                    .OrderByDescending(o => o.EndOfSleep);
+            }
+            if (sleepParameters.SleepType != null && sleepParameters.StartOfSleep != null && sleepParameters.EndOfSleep != null)
+            {
+                sleepers = FindByCondition(o => o.TypeOfSleep >= sleepParameters.SleepType
+                    && o.StartOfSleep >= sleepParameters.StartOfSleep
+                    && o.EndOfSleep <= sleepParameters.EndOfSleep)
+                    .OrderByDescending(o => o.EndOfSleep);
+            }
+            if (sleepParameters.SleepType != null && sleepParameters.StartOfSleep == null && sleepParameters.EndOfSleep == null)
+            {
+                sleepers = FindByCondition(o => o.TypeOfSleep >= sleepParameters.SleepType)
+                    .OrderByDescending(o => o.EndOfSleep);
+            }
+            if (sleepParameters.SleepType == null && sleepParameters.StartOfSleep != null && sleepParameters.EndOfSleep == null)
+            {
+                sleepers = FindByCondition(o => o.StartOfSleep >= sleepParameters.StartOfSleep)
+                    .OrderByDescending(o => o.EndOfSleep);
+            }
+            if (sleepParameters.SleepType == null && sleepParameters.StartOfSleep != null && sleepParameters.EndOfSleep != null)
+            {
+                sleepers = FindByCondition(o => o.StartOfSleep >= sleepParameters.StartOfSleep
+                    && o.EndOfSleep <= sleepParameters.EndOfSleep)
+                    .OrderByDescending (o => o.EndOfSleep);
+            }
+            if (sleepParameters.SleepType == null && sleepParameters.StartOfSleep == null && sleepParameters.EndOfSleep != null)
+            {
+                sleepers = FindByCondition(o => o.EndOfSleep <= sleepParameters.EndOfSleep)
+                    .OrderByDescending(o => o.EndOfSleep);
+            }
 
             return PagedList<Sleep>.ToPagedList(sleepers,
-                sleepParameters.PageNumber, 
-                sleepParameters.PageSize,
-                sleepParameters.SleepType);
+                    sleepParameters.PageNumber,
+                    sleepParameters.PageSize,
+                    sleepParameters.SleepType);
         }
 
         public async Task<List<Sleep>> GetAllSleepAsync()

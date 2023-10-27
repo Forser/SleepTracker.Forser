@@ -2,7 +2,9 @@
 {
     public class SleepParameters
     {
-        public int SleepType { get; set; }
+        public int? SleepType { get; set; }
+        public DateTime? StartOfSleep { get; set; }
+        public DateTime? EndOfSleep { get; set; }
         const int maxPageSize = 50;
         public int PageNumber { get; set; } = 1;
         private int _pageSize = 10;
