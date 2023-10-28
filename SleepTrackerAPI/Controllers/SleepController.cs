@@ -14,6 +14,12 @@ namespace SleepTrackerAPI.Controllers
             _sleepRepository = sleepRepository;
         }
 
+        [HttpGet("GetSleepRecordsWithoutFilter")]
+        public async Task<IEnumerable<Sleep>> GetSleepRecordsWithoutFilter()
+        {
+            return await _sleepRepository.GetAllSleepAsync();
+        }
+
         [HttpGet("GetSleepRecords")]
         public IActionResult GetSleepRecords([FromQuery] SleepParameters sleepParameters)
         {
@@ -84,17 +90,17 @@ namespace SleepTrackerAPI.Controllers
             }
         }
         [HttpDelete("DeleteSleepRecord/{id:int}")]
-        public ActionResult DeleteSleepRecord(int id)
+        public IResult DeleteSleepRecord(int id)
         {
             bool isDeleted = _sleepRepository.DeleteSleepById(id);
 
             if (isDeleted)
             {
-                return RedirectToAction("GetSleepRecords");
+                return Results.NoContent();
             }
             else
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting the sleep record");
+                return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
     }
