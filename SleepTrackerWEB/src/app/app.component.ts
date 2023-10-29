@@ -1,11 +1,19 @@
 import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+
 import { SleepService } from './services/sleep.service';
 import { ISleep } from './models/ISleep.model';
-import { SleepTypeEnum } from './models/SleepTypeEnum';
-import { Router } from '@angular/router';
+import { SleepTypeConst } from './models/SleepTypeConst';
+
+import { CreateComponent } from './create/create.component';
 
 @Component({
   selector: 'app-root',
@@ -27,10 +35,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
-  SleepTypeEnum = SleepTypeEnum;
-  sleepEnum: SleepTypeEnum = SleepTypeEnum.Sleep;
+  SleepTypeEnum = SleepTypeConst;
+  sleepEnum = SleepTypeConst.Sleep;
 
-  constructor(public sleepService: SleepService, private router: Router) {}
+  constructor(
+    public sleepService: SleepService,
+    private router: Router,
+    public dialog: MatDialog
+  ) {}
 
   @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
   @ViewChild(MatSort) sort: MatSort = <MatSort>{};
@@ -49,6 +61,13 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(CreateComponent, {
+      width: '640px',
+      disableClose: true,
+    });
   }
 
   deleteRecord(id: number) {
