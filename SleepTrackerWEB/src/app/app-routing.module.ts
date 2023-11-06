@@ -5,6 +5,7 @@ import { CreateComponent } from './create/create.component';
 
 const routes: Routes = [
   { path: '', component: AppComponent, pathMatch: 'full' },
+  { path: 'sleep/index', component: AppComponent },
   { path: 'create', component: CreateComponent },
 ];
 

@@ -5,8 +5,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Sleep } from '../models/Sleep.model';
+import { SleepService } from '../services/sleep.service';
 import { SleepTypeConst } from '../models/SleepTypeConst';
 
 @Component({
@@ -15,20 +18,35 @@ import { SleepTypeConst } from '../models/SleepTypeConst';
   styleUrls: ['./create.component.css'],
 })
 export class CreateComponent implements OnInit {
-  constructor(private fb: FormBuilder, public dialog: MatDialog) {}
+  constructor(
+    private fb: FormBuilder,
+    public dialog: MatDialog,
+    private sleepService: SleepService,
+    private router: Router,
+    public datepipe: DatePipe
+  ) {}
 
   public breakpoint!: number;
-  myDate = new Date();
+  typeOfSleep = 0;
   wasFormChanged = false;
+  submitted = false;
 
   keys: any[] = [];
   sleepTypes = SleepTypeConst;
   selectedSleepType = SleepTypeConst.Sleep;
 
+  myDate = new Date();
+
+  sleepRecord: Sleep = {
+    startOfSleep: this.myDate.toISOString(),
+    endOfSleep: this.myDate.toISOString(),
+    typeOfSleep: 0,
+  };
+
   public createForm: FormGroup = new FormGroup({
     startDate: new FormControl(''),
     endDate: new FormControl(''),
-    typeOfSleep: new FormControl(''),
+    selectedSleepType: new FormControl(''),
   });
 
   ngOnInit(): void {
@@ -37,13 +55,11 @@ export class CreateComponent implements OnInit {
       value: value,
     }));
 
-    console.log(this.keys);
-
     this.createForm = this.fb.group({
       IdProof: null,
       startDate: [''],
       endDate: [''],
-      typeOfSleep: [''],
+      selectedSleepType: [''],
     });
     this.breakpoint = window.innerWidth <= 600 ? 1 : 2;
   }
@@ -72,6 +88,44 @@ export class CreateComponent implements OnInit {
     for (const i in group.controls) {
       group.controls[i].markAsDirty();
     }
+  }
+
+  onFormSubmit(): void {
+    if (this.createForm.invalid) {
+      return;
+    }
+
+    const startForm = this.datepipe.transform(
+      this.createForm.controls['startDate'].value,
+      'yyyy-MM-ddTHH:mm:ssZ'
+    )!;
+
+    console.log(new Date(startForm).toISOString());
+    console.log(this.createForm.controls['startDate'].value);
+    // const data = {
+    //   startOfSleep: this.datepipe
+    //     .transform(
+    //       this.createForm.controls['startDate'].value,
+    //       'yyyy-MM-ddTHH:mm:ssZ'
+    //     )
+    //     ?.toString()!,
+    //   endOfSleep: this.datepipe
+    //     .transform(
+    //       this.createForm.controls['endDate'].value,
+    //       'yyyy-MM-ddTHH:mm:ssZ'
+    //     )
+    //     ?.toString()!,
+    //   typeOfSleep: this.createForm.controls['selectedSleepType'].value,
+    // };
+    // console.log(data);
+    return;
+    // this.sleepService.addRecord(data).subscribe({
+    //   next: (res) => {
+    //     console.log(res);
+    //     this.router.navigateByUrl('');
+    //   },
+    //   error: (e) => console.log(e),
+    // });
   }
 
   formChanged() {

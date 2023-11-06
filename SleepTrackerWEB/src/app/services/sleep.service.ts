@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
+import { Sleep } from '../models/Sleep.model';
 import { ISleep } from '../models/ISleep.model';
 
 @Injectable({
@@ -35,6 +36,17 @@ export class SleepService {
     return this.httpClient
       .delete<ISleep>(url, this.httpOptions)
       .pipe(catchError(this.handleError<ISleep>('deleteRecord')));
+  }
+
+  addRecord(sleep: Sleep): Observable<Sleep> {
+    console.log(JSON.stringify(sleep, null, 2));
+    return this.httpClient
+      .post<Sleep>(
+        this.apiURL + '/PostSleepRecord',
+        JSON.stringify(sleep, null, 2),
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError<Sleep>('addRecord')));
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

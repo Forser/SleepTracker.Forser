@@ -19,6 +19,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import {
+  MatTimepickerModule,
+  MatNativeDateTimeModule,
+} from '@dhutaryan/ngx-mat-timepicker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -40,7 +44,6 @@ import { CreateComponent } from './create/create.component';
     MatSortModule,
     MatProgressSpinnerModule,
     NgIf,
-    DatePipe,
     MatDialogModule,
     ReactiveFormsModule,
     FormsModule,
@@ -50,8 +53,10 @@ import { CreateComponent } from './create/create.component';
     MatNativeDateModule,
     MatInputModule,
     MatSelectModule,
+    MatTimepickerModule,
+    MatNativeDateTimeModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
