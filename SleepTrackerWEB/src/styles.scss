@@ -1,18 +1,29 @@
 @use "sass:map";
 @use "@angular/material" as mat;
-@use "../node_modules/@dhutaryan/ngx-mat-timepicker" as mat-timepicker;
 @use "./styles/theme";
 
 @include mat.core();
 
-@include mat.form-field-theme(theme.$ngx-mat-timepicker-theme);
-@include mat.input-theme(theme.$ngx-mat-timepicker-theme);
-@include mat.button-theme(theme.$ngx-mat-timepicker-theme);
-@include mat.fab-theme(theme.$ngx-mat-timepicker-theme);
-@include mat.icon-button-theme(theme.$ngx-mat-timepicker-theme);
-@include mat.divider-theme(theme.$ngx-mat-timepicker-theme);
+$my-primary: mat.define-palette(mat.$indigo-palette, 500);
+$my-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
 
-@include mat-timepicker.timepicker-theme(theme.$ngx-mat-timepicker-theme);
+$my-warn: mat.define-palette(mat.$red-palette);
+
+$my-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-accent,
+      warn: $my-warn,
+    ),
+    typography: mat.define-typography-config(),
+    density: 0,
+  )
+);
+
+@include mat.core-theme($my-theme);
+
+@include mat.button-theme($my-theme);
 
 html,
 body {
@@ -23,9 +34,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.timepicker-overlay {
-  z-index: 100000 !important;
-}
-.timepicker-backdrop-overlay {
-  z-index: 100000 !important;
+.mat-datepicker-content {
+  background-color: white;
 }

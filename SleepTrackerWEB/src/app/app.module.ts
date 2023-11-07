@@ -6,8 +6,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatButtonModule } from '@angular/material/button';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -20,9 +18,10 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {
-  MatTimepickerModule,
-  MatNativeDateTimeModule,
-} from '@dhutaryan/ngx-mat-timepicker';
+  NgxMatDatetimePickerModule,
+  NgxMatTimepickerModule,
+  NgxMatNativeDateModule,
+} from '@angular-material-components/datetime-picker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -49,14 +48,13 @@ import { CreateComponent } from './create/create.component';
     FormsModule,
     MatGridListModule,
     MatFormFieldModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
     MatInputModule,
     MatSelectModule,
-    MatTimepickerModule,
-    MatNativeDateTimeModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, NgxMatNativeDateModule],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

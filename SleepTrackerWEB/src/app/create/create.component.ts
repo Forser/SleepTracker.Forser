@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -8,6 +8,7 @@ import {
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ThemePalette } from '@angular/material/core';
 import { Sleep } from '../models/Sleep.model';
 import { SleepService } from '../services/sleep.service';
 import { SleepTypeConst } from '../models/SleepTypeConst';
@@ -30,12 +31,14 @@ export class CreateComponent implements OnInit {
   typeOfSleep = 0;
   wasFormChanged = false;
   submitted = false;
+  public color: ThemePalette = 'primary';
 
   keys: any[] = [];
   sleepTypes = SleepTypeConst;
   selectedSleepType = SleepTypeConst.Sleep;
 
   myDate = new Date();
+  public dateControl = new FormControl(new Date());
 
   sleepRecord: Sleep = {
     startOfSleep: this.myDate.toISOString(),
