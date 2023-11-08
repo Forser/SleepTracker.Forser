@@ -3,11 +3,7 @@
     <h2 class="primary">Add Sleep Record</h2>
   </div>
   <div>
-    <form
-      [formGroup]="createForm"
-      (change)="formChanged()"
-      (ngSubmit)="onFormSubmit()"
-    >
+    <form [formGroup]="createForm" (ngSubmit)="onFormSubmit()">
       <mat-grid-list
         cols="2"
         [cols]="breakpoint"
@@ -19,15 +15,15 @@
             <mat-form-field>
               <input
                 matInput
-                [ngxMatDatetimePicker]="startPicker"
+                [ngxMatDatetimePicker]="startOfSleep"
                 placeholder="Choose a date"
-                [formControl]="dateControl"
+                formControlName="startOfSleep"
               />
               <ngx-mat-datepicker-toggle
                 matSuffix
-                [for]="startPicker"
+                [for]="startOfSleep"
               ></ngx-mat-datepicker-toggle>
-              <ngx-mat-datetime-picker #startPicker [color]="color">
+              <ngx-mat-datetime-picker #startOfSleep [color]="color">
                 <ngx-mat-datepicker-actions>
                   <button mat-button ngxMatDatepickerCancel>Cancel</button>
                   <button
@@ -47,15 +43,15 @@
             <mat-form-field>
               <input
                 matInput
-                [ngxMatDatetimePicker]="endPicker"
+                [ngxMatDatetimePicker]="endOfSleep"
                 placeholder="Choose a date"
-                [formControl]="dateControl"
+                formControlName="endOfSleep"
               />
               <ngx-mat-datepicker-toggle
                 matSuffix
-                [for]="endPicker"
+                [for]="endOfSleep"
               ></ngx-mat-datepicker-toggle>
-              <ngx-mat-datetime-picker #endPicker [color]="color">
+              <ngx-mat-datetime-picker #endOfSleep [color]="color">
                 <ngx-mat-datepicker-actions>
                   <button mat-button ngxMatDatepickerCancel>Cancel</button>
                   <button

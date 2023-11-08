@@ -9,36 +9,3 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-
-.mat-datepicker-content {
-  background-color: white;
-}
-
-.mat-calendar-body-cell-content {
-  border-style: none;
-}
-
-.mat-calendar-body-cell-content,
-.mat-date-range-input-seperator {
-  color: #000000;
-  border-color: transparent;
-}
-
-.mat-focus-indicator:before {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: absolute;
-  box-sizing: border-box;
-  pointer-events: none;
-  display: var(--mat-focus-indicator-display, none);
-  border: var(--mat-focus-indicator-border-width, 3px)
-    var(--mat-focus-indicator-border-style, solid)
-    var(--mat-focus-indicator-border-color, transparent);
-  border-radius: var(--mat-focus-indicator-border-radius, 4px);
-}
-.mat-calendar-body-active > .mat-calendar-body-today {
-  color: black;
-  background-color: lightblue;
-}

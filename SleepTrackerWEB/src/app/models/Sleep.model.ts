@@ -1,7 +1,5 @@
 export class Sleep {
-  constructor(
-    public startOfSleep: string,
-    public endOfSleep: string,
-    public typeOfSleep: number
-  ) {}
+  startOfSleep!: string | undefined;
+  endOfSleep!: string | undefined;
+  typeOfSleep: number | undefined;
 }
