@@ -69,7 +69,6 @@ export class CreateComponent implements OnInit {
     //   const.dialogRef = this.dialog.open(DeleteComponent, {
     //     width: '340px'
     //   });
-    // } else {
     this.dialog.closeAll();
     // }
   }

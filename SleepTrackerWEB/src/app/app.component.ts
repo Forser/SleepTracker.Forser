@@ -68,6 +68,9 @@ export class AppComponent implements OnInit, AfterViewInit {
       width: '640px',
       disableClose: true,
     });
+    dialogRef.afterClosed().subscribe(() => {
+      this.fetchData();
+    });
   }
 
   deleteRecord(id: number) {
